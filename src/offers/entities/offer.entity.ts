@@ -1,28 +1,11 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  OneToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { IsDecimal } from 'class-validator';
 import { User } from '../../users/entities/user.entity'; // Подставьте правильный путь к модели User
 import { Wish } from 'src/wishes/entities/wish.entity';
+import { BaseEntity } from 'src/utils/baseEntity';
 
 @Entity()
-export class Offer {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
+export class Offer extends BaseEntity {
   @ManyToOne(() => User, (user) => user.offers)
   user: User;
 

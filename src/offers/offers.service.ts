@@ -19,31 +19,37 @@ export class OffersService {
 
   async create(offer, userId) {
     const wish = await this.wishesService.findOne(offer.itemId);
-    if (wish.owner.id !== userId && wish.raised < wish.price) {
-      if (offer.amount <= wish.price - wish.raised) {
-        let createOffer;
+    if (wish.raised < wish.price) {
+      if (wish.owner.id !== userId) {
+        if (offer.amount <= wish.price - wish.raised) {
+          let createOffer;
 
-        if (offer.hidden) {
-          createOffer = {
-            item: wish,
-            amount: offer.amount,
-            hidden: offer.hidden,
-          };
+          if (offer.hidden) {
+            createOffer = {
+              item: wish,
+              amount: offer.amount,
+              hidden: offer.hidden,
+            };
+          } else {
+            createOffer = {
+              user: userId,
+              item: wish,
+              amount: offer.amount,
+              hidden: offer.hidden,
+            };
+          }
+
+          return this.OfferRepository.save(createOffer);
         } else {
-          createOffer = {
-            user: userId,
-            item: wish,
-            amount: offer.amount,
-            hidden: offer.hidden,
-          };
+          throw new BadRequestException(
+            'Сумма взноса превышает требуемую сумму',
+          );
         }
-
-        return this.OfferRepository.save(createOffer);
       } else {
-        throw new BadRequestException();
+        throw new ForbiddenException('Нельзя вносить деньги на свой подарок');
       }
     } else {
-      throw new ForbiddenException();
+      throw new ForbiddenException('Деньги на подарок уже собраны');
     }
   }
 

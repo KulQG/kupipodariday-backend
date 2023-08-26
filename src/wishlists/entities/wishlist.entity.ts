@@ -5,17 +5,16 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  OneToMany,
   ManyToOne,
-  JoinColumn,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
 import { Wish } from 'src/wishes/entities/wish.entity';
 import { User } from 'src/users/entities/user.entity';
+import { BaseEntity } from 'src/utils/baseEntity';
 
 @Entity()
-export class Wishlist {
+export class Wishlist extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -28,10 +27,6 @@ export class Wishlist {
   @Column()
   @Length(1, 250)
   name: string;
-
-  // @Column()
-  // @Length(1500)
-  // description: string;
 
   @Column()
   @IsUrl()

@@ -18,11 +18,13 @@ import { JwtGuard } from 'src/guards/jwt.guard';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(JwtGuard)
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
+  @UseGuards(JwtGuard)
   @Post('find')
   findMany(@Body() query: { query: string }) {
     return this.usersService.findMany(query);

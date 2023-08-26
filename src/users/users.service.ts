@@ -14,7 +14,10 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    return this.UserRepository.save(createUserDto);
+    const { password, ...rest } = createUserDto;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    return this.UserRepository.save({ hashedPassword, ...rest });
   }
 
   async findMany(search: { query: string }) {

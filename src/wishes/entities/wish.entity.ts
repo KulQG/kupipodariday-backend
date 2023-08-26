@@ -11,9 +11,10 @@ import {
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity'; // Подставьте правильный путь к модели User
 import { Offer } from 'src/offers/entities/offer.entity';
+import { BaseEntity } from 'src/utils/baseEntity';
 
 @Entity()
-export class Wish {
+export class Wish extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
