@@ -17,7 +17,7 @@ export class UsersService {
     const { password, ...rest } = createUserDto;
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    return this.UserRepository.save({ hashedPassword, ...rest });
+    return this.UserRepository.save({ password: hashedPassword, ...rest });
   }
 
   async findMany(search: { query: string }) {
